@@ -2,6 +2,7 @@ library(shiny)
 library(dplyr)
 library(purrr)
 library(readr)
+library(stringr)
 library(magrittr)
 
 tidytuesday_tweets <- readRDS("data/tidytuesday_tweets.rds")
@@ -18,19 +19,34 @@ tidytuesday_tweets <- tidytuesday_tweets %>%
 
 ui <- fluidPage(
   
+  tags$head(HTML('<style>
+                  * {
+                 font-size: 100%;
+                 font-family: Roboto Regular;
+                 }</style>')),
   tags$head(HTML('<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>')),
   
-  titlePanel('tidytuesday.rocks'),
-  
-  sidebarPanel(
-    uiOutput('intro'),
-    selectInput('topic', 'Choose a dataset', datasets$topic),
-    selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), selected = "Most recent")
-  ),
-  
-  mainPanel(
-    h1(textOutput('topic')),
-    uiOutput('tweets')
+   
+  fluidRow(
+    column(1),
+    column(3,
+    h2('tidytuesday.rocks', style="font-family:Roboto Mono;"),
+    selectInput('filter_dataset', 'Choose a dataset', datasets$dataset_name, 
+                selected = datasets$dataset_name[sample.int(nrow(datasets))]),
+    selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
+                selected = "Most recent")
+    ),
+    column(5,
+      h2(textOutput('dataset_name')),
+      tags$hr(),
+      h3('Dataset links'),
+      p(uiOutput('dataset_files')),
+      p(uiOutput('dataset_articles')),
+      p(uiOutput('dataset_sources')),
+      h3(textOutput('tweets_sorted_by')),
+      uiOutput('tweets')
+    ),
+    column(3)
   )
 )
 
@@ -40,34 +56,43 @@ embed_tweet <- function(tweet) {
 
 server <- function(input, output, session) {
   
-
   filtered_tweets <- reactive({
     tidytuesday_tweets %>%
-      filter(!is_dataset_intro, topic == input$topic) %>%
+      filter(!is_dataset_intro, dataset_name == input$filter_dataset) %>%
       select(screen_name, status_id, created_at, favorite_count, retweet_count)
   })
   
-  selected_intro <- reactive({
-    tidytuesday_tweets %>%
-      filter(is_dataset_intro, topic == input$topic) %>%
-      select(screen_name, status_id) %>%
-      transpose()
-  })
-  
-  
   sorted_tweets <- reactive({
     switch(input$sort_by,
-           "Most recent" = filtered_tweets() %>% arrange(desc(created_at)),
-           "Most likes" = filtered_tweets() %>% arrange(desc(favorite_count)),
+           "Most recent"   = filtered_tweets() %>% arrange(desc(created_at)),
+           "Most likes"    = filtered_tweets() %>% arrange(desc(favorite_count)),
            "Most retweets" = filtered_tweets() %>% arrange(desc(retweet_count)))
   })
   
-  output$topic <- reactive({
-    input$topic
+  output$tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
+  
+  dataset_info <- reactive({
+    datasets %>%
+      filter(dataset_name == input$filter_dataset) %>%
+      transpose() %>%
+      extract2(1)
   })
   
-  output$intro <- renderUI({
-    tagList(lapply(selected_intro(), embed_tweet), tags$script('twttr.widgets.load(document.getElementById("intro"));'))
+  output$dataset_name <- renderText({dataset_info()$dataset_name})
+  
+  output$dataset_files <- renderUI({
+    tagList(lapply(unlist(str_split(dataset_info()$dataset_files, ",")), 
+                   function(x) shiny::a(paste("💾", x), href = x, style = "cont-family:Roboto Mono;")))
+  })
+  
+  output$dataset_articles <- renderUI({
+    tagList(lapply(unlist(str_split(dataset_info()$dataset_article, ",")), 
+                   function(x) shiny::a(paste("🗞", x), href = x, style = "font-family:Roboto Mono;")))
+  })
+  
+  output$dataset_sources <- renderUI({
+    tagList(lapply(unlist(str_split(dataset_info()$dataset_article, ",")), 
+                   function(x) shiny::a(paste("📍", x), href = x, style = "font-family:Roboto Mono;")))
   })
   
   output$tweets <- renderUI({
