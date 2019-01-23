@@ -22,7 +22,7 @@ ui <- fluidPage(
   tags$head(HTML('<style>
                   * {
                  font-size: 100%;
-                 font-family: Roboto Regular;
+                 font-family: Roboto Mono;
                  }</style>')),
   tags$head(HTML('<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>')),
   
@@ -31,14 +31,20 @@ ui <- fluidPage(
     column(1),
     column(3,
     h2('tidytuesday.rocks', style="font-family:Roboto Mono;"),
-    selectInput('filter_dataset', 'Choose a dataset', datasets$dataset_name, 
+    tags$hr(),
+    HTML("<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly data visualization challenge hosted by <a href='https://twitter.com/thomas_mock'>@thomas_mock</a> and <a href='https://twitter.com/R4DSCommunity'>@R4DSCommunity</a>. Share your entry on Twitter, and be sure to include <a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>!</p>"),
+         
+    HTML("<p>Here I labeled every #TidyTuesday tweet from 2018 by the dataset to which it referred so it's easy to see everyone's different thoughts on the same dataset.</p>"),
+         
+    HTML("<p>tidytuesday.rocks is built with <a href='https://shiny.rstudio.com/'>Shiny</a> and uses data collected with <a href='https://rtweet.info/'>rtweet</a>. Source code is <a href='https://github.com/nsgrantham/tidytweets'>on GitHub</a>. Say hi <a href='https://twitter.com/'>@nsgrantham</a>, let's chat about data viz.</p>"),
+    p(selectInput('filter_dataset', 'Choose a dataset', datasets$dataset_name, 
                 selected = datasets$dataset_name[sample.int(nrow(datasets))]),
     selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-                selected = "Most recent")
+                selected = "Most recent")),
+    tags$hr()
     ),
-    column(5,
+    column(6,
       h2(textOutput('dataset_name')),
-      tags$hr(),
       h3('Dataset links'),
       p(uiOutput('dataset_files')),
       p(uiOutput('dataset_articles')),
@@ -46,7 +52,7 @@ ui <- fluidPage(
       h3(textOutput('tweets_sorted_by')),
       uiOutput('tweets')
     ),
-    column(3)
+    column(2)
   )
 )
 
@@ -82,7 +88,7 @@ server <- function(input, output, session) {
   
   output$dataset_files <- renderUI({
     tagList(lapply(unlist(str_split(dataset_info()$dataset_files, ",")), 
-                   function(x) shiny::a(paste("💾", x), href = x, style = "cont-family:Roboto Mono;")))
+                   function(x) shiny::a(paste("💾", x), href = x, style = "font-family:Roboto Mono;")))
   })
   
   output$dataset_articles <- renderUI({
@@ -91,7 +97,7 @@ server <- function(input, output, session) {
   })
   
   output$dataset_sources <- renderUI({
-    tagList(lapply(unlist(str_split(dataset_info()$dataset_article, ",")), 
+    tagList(lapply(unlist(str_split(dataset_info()$dataset_source, ",")), 
                    function(x) shiny::a(paste("📍", x), href = x, style = "font-family:Roboto Mono;")))
   })
   
