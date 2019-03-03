@@ -1,2 +1,2 @@
-# tidytweets
-A catalogue of #tidytuesday tweets by dataset.
+# tidytuesdayrocks
+An interactive catalogue of #TidyTuesday tweets from 2018.
