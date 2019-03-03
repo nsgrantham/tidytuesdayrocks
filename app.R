@@ -5,16 +5,9 @@ library(readr)
 library(stringr)
 library(magrittr)
 
-tidytuesday_tweets <- readRDS("data/tidytuesday_tweets.rds")
+datasets <- read_tsv(file.path("data", "datasets.tsv"))
 
-datasets <- read_tsv("data/datasets.tsv")
-
-tweet_tags <- read_tsv("data/tweets.tsv", col_types = list(status_id = col_character())) %>%
-  select(status_id, dataset_id) %>%
-  left_join(datasets, by = "dataset_id")
-
-tidytuesday_tweets <- tidytuesday_tweets %>%
-  left_join(tweet_tags, by = "status_id") %>%
+tweets <- read_tsv(file.path("data", "tweets.tsv")) %>%
   filter(dataset_id != "x")
 
 ui <- fluidPage(
@@ -24,13 +17,26 @@ ui <- fluidPage(
     column(1),
     column(4,
       h2("tidytuesday.rocks"),
-      HTML("<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly social data project in <a href='https://www.r-project.org/'>R</a>. Every week <a href='https://twitter.com/thomas_mock'>@thomas_mock</a> and <a href='https://twitter.com/R4DSCommunity'>@R4DSCommunity</a> post a new dataset and ask users to explore it and share their findings on Twitter with <a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>"),
-      HTML("<p>Since the first dataset was posted on April 2nd, 2018, there are now over 40 datasets and more than 800 #TidyTuesday tweets from 221 users! Use the options below to filter the tweets by dataset and sort them by date, likes, and retweets.</p>"),
-      HTML("<p>I built tidytuesday.rocks with <a href='https://shiny.rstudio.com/'>Shiny</a> using tweets collected at the end of 2018 with <a href='https://rtweet.info/'>rtweet</a> (tweets from 2019 are coming soon). You can find the source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>, where issues and PRs are welcome. I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
-      HTML("<p>Happy plotting!</p>"),
-      p(selectInput('dataset_name', 'Choose a dataset', datasets$dataset_name, selected = datasets$dataset_name[sample.int(nrow(datasets), size = 1)]),
-        selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), selected = "Most recent"))
-      ),
+      HTML(paste("<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a>",
+                 "is a weekly social data project in <a href='https://www.r-project.org/'>R</a>.",
+                 "Every week <a href='https://twitter.com/thomas_mock'>@thomas_mock</a> and",
+                 "<a href='https://twitter.com/R4DSCommunity'>@R4DSCommunity</a> post a new dataset",
+                 "and ask R users to explore it and share their findings on Twitter with",
+                 "<a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>")),
+      HTML(paste("<p>Since the first dataset was posted on April 2nd, 2018, there are now over",
+                 "40 datasets and more than 800 #TidyTuesday tweets from 221 users! Use the options",
+                 "below to filter the tweets by dataset and sort them by date, likes, and retweets.</p>")),
+      HTML(paste("<p>I built tidytuesday.rocks with <a href='https://shiny.rstudio.com/'>Shiny</a> using tweets",
+                 "collected at the end of 2018 with <a href='https://rtweet.info/'>rtweet</a> (tweets from 2019 are",
+                 "coming soon). You can find the source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>",
+                 "on GitHub</a>, where issues and PRs are welcome. I'd love to hear your feedback, say hi",
+                 "<a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>")),
+      p("Happy plotting!"),
+      p(selectInput('dataset_name', 'Choose a dataset', datasets$dataset_name,
+                    selected = base::sample(datasets$dataset_name, 1)),
+        selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
+                    selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1)))
+    ),
     column(6,
       h2(textOutput('dataset_name')),
       p(uiOutput('dataset_links')), 
@@ -42,10 +48,10 @@ ui <- fluidPage(
 )
 
 embed_tweet <- function(tweet) {
-  tags$blockquote(class = "twitter-tweet", tags$a(href = paste0("https://twitter.com/", tweet$screen_name, "/status/", tweet$status_id)))
+  tags$blockquote(class = "twitter-tweet", tags$a(href = tweet$status_url))
 }
 
-make_links <- function(urls, text, icon = "") {
+make_links <- function(urls, text, icon = NULL) {
   if (is.na(urls)) return("")
   split_urls <- unlist(str_split(urls, ","))
   if (length(split_urls) > 1) {
@@ -58,10 +64,17 @@ make_links <- function(urls, text, icon = "") {
 
 server <- function(input, output, session) {
   
-  filtered_tweets <- reactive({
-    tidytuesday_tweets %>%
+  chosen_dataset <- reactive({
+    datasets %>%
       filter(dataset_name == input$dataset_name) %>%
-      select(screen_name, status_id, created_at, favorite_count, retweet_count)
+      transpose() %>%
+      extract2(1)
+  })
+  
+  filtered_tweets <- reactive({
+    tweets %>%
+      filter(dataset_id == chosen_dataset()$dataset_id) %>%
+      select(status_url, created_at, favorite_count, retweet_count)
   })
   
   sorted_tweets <- reactive({
@@ -73,23 +86,17 @@ server <- function(input, output, session) {
   
   output$tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
   
-  dataset_info <- reactive({
-    datasets %>%
-      filter(dataset_name == input$dataset_name) %>%
-      transpose() %>%
-      extract2(1)
-  })
-  
-  output$dataset_name <- renderText({dataset_info()$dataset_name})
+  output$dataset_name <- renderText({chosen_dataset()$dataset_name})
   
   output$dataset_links <- renderUI({
-    tagList(make_links(dataset_info()$dataset_files, "Data", "💾"),
-            make_links(dataset_info()$dataset_articles, "Article", "🗞"),
-            make_links(dataset_info()$dataset_sources, "Source", "📍"))
+    tagList(make_links(chosen_dataset()$dataset_files, "Data", "\U0001F4BE"),        # floppy disk
+            make_links(chosen_dataset()$dataset_articles, "Article", "\U0001F5DE"),  # rolled up newspaper
+            make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD"))    # red pin
   })
   
   output$tweets <- renderUI({
-    tagList(lapply(transpose(sorted_tweets()), embed_tweet), tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
+    tagList(map(transpose(sorted_tweets()), embed_tweet), 
+            tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
   })
 }
 
