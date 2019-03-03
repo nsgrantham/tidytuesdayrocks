@@ -23,10 +23,10 @@ ui <- fluidPage(
   fluidRow(
     column(1),
     column(4,
-      h2("tidytuesday.rocks", style = "font-family:Roboto Mono;"),
+      h2("tidytuesday.rocks"),
       HTML("<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly social data project in <a href='https://www.r-project.org/'>R</a>. Every week <a href='https://twitter.com/thomas_mock'>@thomas_mock</a> and <a href='https://twitter.com/R4DSCommunity'>@R4DSCommunity</a> post a new dataset and ask users to explore it and share their findings on Twitter with <a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>"),
       HTML("<p>Since the first dataset was posted on April 2nd, 2018, there are now over 40 datasets and more than 800 #TidyTuesday tweets from 221 users! Use the options below to filter the tweets by dataset and sort them by date, likes, and retweets.</p>"),
-      HTML("<p>I built tidytuesday.rocks with <a href='https://shiny.rstudio.com/'>Shiny</a> using tweets collected at the end of 2018 with <a href='https://rtweet.info/'>rtweet</a> (tweets from 2019 are coming soon). You can find the source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>, where issues and PRs are welcome. Or reach me on Twitter <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>, I'd love to hear your feedback.</p>"),
+      HTML("<p>I built tidytuesday.rocks with <a href='https://shiny.rstudio.com/'>Shiny</a> using tweets collected at the end of 2018 with <a href='https://rtweet.info/'>rtweet</a> (tweets from 2019 are coming soon). You can find the source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>, where issues and PRs are welcome. I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
       HTML("<p>Happy plotting!</p>"),
       p(selectInput('dataset_name', 'Choose a dataset', datasets$dataset_name, selected = datasets$dataset_name[sample.int(nrow(datasets), size = 1)]),
         selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), selected = "Most recent"))
@@ -52,7 +52,7 @@ make_links <- function(urls, text, icon = "") {
     text <- paste(text, 1:length(split_urls))
   }
   names(split_urls) <- text 
-  links <- imap(split_urls, ~ shiny::a(.y, href = .x, style = "font-family:Roboto Mono;"))
+  links <- imap(split_urls, ~ shiny::a(.y, href = .x))
   c(icon, links)
 }
 
