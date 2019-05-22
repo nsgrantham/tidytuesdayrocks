@@ -25,7 +25,7 @@ ui <- fluidPage(
                  "and ask R users to explore it and share their findings on Twitter with",
                  "<a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>")),
       HTML(paste("<p>Since the first dataset was posted on April 2nd, 2018, there are now over",
-                 "50 datasets and more than 1,400 #TidyTuesday tweets from 353 users! Use the options",
+                 "50 datasets and more than 1,700 #TidyTuesday tweets from 426 users! Use the options",
                  "below to filter the tweets by dataset and sort them by date, likes, and retweets.</p>")),
       HTML(paste("<p>tidytuesday.rocks is only about 100 lines of R code and relies on your #TidyTuesday",
                  "tweets, which I scrape and manually label once every couple weeks. ",
