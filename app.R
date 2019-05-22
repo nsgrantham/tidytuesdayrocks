@@ -36,8 +36,8 @@ ui <- fluidPage(
                  "among 136 submissions. \U0001F57A</p>")),
       HTML("<p>I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
       p("Happy plotting!"),
-      p(selectInput('dataset_name', 'Choose a dataset', datasets$dataset_name,
-                    selected = base::sample(datasets$dataset_name, 1)),
+      p(selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name),
+                    selected = rev(datasets$dataset_name)[1]),
         selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
                     selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1)))
     ),
