@@ -57,3 +57,6 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 54	📈 The Economist Data Viz Mistakes	https://medium.economist.com/mistakes-weve-drawn-a-few-8cdd8a42d368	https://medium.economist.com/mistakes-weve-drawn-a-few-8cdd8a42d368	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-16
 55	✌️ Anime Popularity	https://myanimelist.net/topanime.php?type=bypopularity	https://www.kaggle.com/aludosan/myanimelist-anime-dataset-as-20190204	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-23
 56	🐦 Chicago Bird Collisions	https://royalsocietypublishing.org/doi/10.1098/rspb.2019.0364#d3e550	https://datadryad.org/resource/doi:10.5061/dryad.8rr0498	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-30
+57	👨‍🏫 Global Student-Teacher Ratios	http://www.centerforpubliceducation.org/research/class-size-and-student-achievement	http://data.uis.unesco.org/index.aspx?queryid=180	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-05-07
+58	🏆 Nobel Prize Winners	https://www.economist.com/graphic-detail/2016/10/03/greying-of-the-nobel-laureates	https://www.kaggle.com/nobelfoundation/nobel-laureates	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-05-14
+
