@@ -62,4 +62,4 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 59	♻️ Global Plastic Waste	https://ourworldindata.org/plastic-pollution	https://ourworldindata.org/plastic-pollution	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-05-21
 60	🍷 Wine Ratings	https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost	https://www.kaggle.com/zynicide/wine-reviews	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-05-28
 61	🍜 Ramen Ratings	https://www.foodrepublic.com/2014/12/02/theres-a-website-that-has-rated-1518-bowls-of-instant-ramen/	https://www.theramenrater.com/resources-2/the-list/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-06-04
-
+62	☄️ Meteorite Impacts	https://www.theguardian.com/news/datablog/interactive/2013/feb/15/meteorite-fall-map	https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh/data	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-06-11
