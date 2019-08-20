@@ -72,5 +72,5 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 69	🎮 Video Games	https://cruiseofdimensionality.home.blog/2019/07/24/pc-video-games-we-still-play/	https://steamspy.com/year/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-07-30
 70	🎨 Bob Ross Paintings	https://fivethirtyeight.com/features/a-statistical-analysis-of-the-work-of-bob-ross/	https://github.com/fivethirtyeight/data/tree/master/bob-ross	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-06
 71	👑 Roman Emperors	https://www.reddit.com/r/dataisbeautiful/comments/8tzfgz/roman_emperors_by_year_oc/	https://en.wikipedia.org/wiki/List_of_Roman_emperors, https://github.com/zonination/emperors/blob/master/README.md	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-13
-72	🤯 Nuclear Explosions	https://ourworldindata.org/nuclear-weapons	https://github.com/data-is-plural/nuclear-explosions/blob/master/documents/sipri-report-original.pdf	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-20
+
 
