@@ -1,6 +1,6 @@
 # tidytuesdayrocks
-An interactive catalogue of #TidyTuesday tweets from 2018.
+An interactive catalogue of #TidyTuesday tweets.
 
-See it in action at [https://nsgrantham.shinyapps.io/tidytuesdayrocks](https://nsgrantham.shinyapps.io/tidytuesdayrocks).
+See it in action at [tidytuesday.rocks](https://nsgrantham.shinyapps.io/tidytuesdayrocks).
 
 Happy plotting!
