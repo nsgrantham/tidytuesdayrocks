@@ -31,9 +31,9 @@ ui <- fluidPage(
                  "<a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>")),
       HTML(paste("<p>Since the first dataset was posted on April 2nd, 2018, there are now over",
                  "70 datasets and 2,489 #TidyTuesday tweets from 574 users! Use the options",
-                 "below to filter the tweets by dataset and sort them by date, likes, and retweets.</p>")),
-      HTML(paste("<p>tidytuesday.rocks is only about 100 lines of R code and relies on your #TidyTuesday",
-                 "tweets, which I scrape and manually label once every couple weeks. ",
+                 "below to filter the tweets by dataset or Twitter user and sort them by date, likes, and retweets.</p>")),
+      HTML(paste("<p>tidytuesday.rocks is about 150 lines of R code and relies on your #TidyTuesday",
+                 "tweets, which I scrape and manually label every few weeks. ",
                  "It is built with <a href='https://shiny.rstudio.com/'>Shiny</a> and <a href='https://rtweet.info/'>rtweet</a>",
                  "and its source code is <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>.</p>")),
       HTML(paste("<p>The response to tidytuesday.rocks has been amazing! It was even awarded ", 
@@ -145,7 +145,7 @@ server <- function(input, output, session) {
   output$user_name <- renderText({input$user_name})
   
   output$user_links <- renderUI({
-    tagList(make_links(paste0("https://twitter.com/", input$user_name), "Twitter", "\U0001F4AC"))
+    tagList(make_links(paste0("https://twitter.com/", input$user_name), "Twitter", "\U0001F4AC"))  # speech bubble
   })
   
   output$embedded_user_tweets <- renderUI({
