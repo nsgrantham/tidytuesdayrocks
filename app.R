@@ -10,6 +10,11 @@ datasets <- read_tsv(file.path("data", "datasets.tsv"))
 tweets <- read_tsv(file.path("data", "tweets.tsv")) %>%
   filter(dataset_id != "x")
 
+users <- tweets %>%
+  pull(screen_name) %>%
+  unique() %>%
+  sort()
+
 ui <- fluidPage(
   tags$head(HTML('<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">')),
   tags$head(HTML('<style>* {font-size: 100%; font-family: Roboto Mono;}</style>')),
@@ -36,16 +41,37 @@ ui <- fluidPage(
                  "among 136 submissions. \U0001F57A</p>")),
       HTML("<p>I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
       p("Happy plotting!"),
-      p(selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name),
-                    selected = rev(datasets$dataset_name)[1]),
+      br(),
+      tabsetPanel(id = "selected_tab", type = "tabs", selected = "dataset",
+          tabPanel("Filter by Dataset", value = "dataset",
+            br(),
+            selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name), 
+                        selected = rev(datasets$dataset_name)[1])),
+          tabPanel("Filter by User", value = "user",
+            br(),
+            #selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name), 
+            #            selected = rev(datasets$dataset_name)[1]))),
+            selectizeInput("user_name", "Choose a user", users, selected = sample(users, 1)))),
+            #selectInput('user_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
+            #            selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))))
         selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-                    selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1)))
+                    selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))
     ),
     column(6,
-      h2(textOutput('dataset_name')),
-      p(uiOutput('dataset_links')), 
-      h3(textOutput('tweets_sorted_by')),
-      uiOutput('tweets')
+      conditionalPanel(
+        condition = "input.selected_tab == 'dataset'",
+        h2(textOutput('dataset_name')),
+        p(uiOutput('dataset_links')), 
+        h3(textOutput('dataset_tweets_sorted_by')),
+        uiOutput('embedded_dataset_tweets')
+      ),
+      conditionalPanel(
+        condition = "input.selected_tab == 'user'",
+        h2(textOutput('user_name')),
+        p(uiOutput('user_links')), 
+        h3(textOutput('user_tweets_sorted_by')),
+        uiOutput('embedded_user_tweets')
+      )
     ),
     column(1)
   )
@@ -75,20 +101,20 @@ server <- function(input, output, session) {
       extract2(1)
   })
   
-  filtered_tweets <- reactive({
+  dataset_tweets <- reactive({
     tweets %>%
       filter(dataset_id == chosen_dataset()$dataset_id) %>%
       select(status_url, created_at, favorite_count, retweet_count)
   })
   
-  sorted_tweets <- reactive({
+  sorted_dataset_tweets <- reactive({
     switch(input$sort_by,
-           "Most recent"   = filtered_tweets() %>% arrange(desc(created_at)),
-           "Most likes"    = filtered_tweets() %>% arrange(desc(favorite_count)),
-           "Most retweets" = filtered_tweets() %>% arrange(desc(retweet_count)))
+           "Most recent"   = dataset_tweets() %>% arrange(desc(created_at)),
+           "Most likes"    = dataset_tweets() %>% arrange(desc(favorite_count)),
+           "Most retweets" = dataset_tweets() %>% arrange(desc(retweet_count)))
   })
   
-  output$tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
+  output$dataset_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
   
   output$dataset_name <- renderText({chosen_dataset()$dataset_name})
   
@@ -98,10 +124,36 @@ server <- function(input, output, session) {
             make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD"))    # red pin
   })
   
-  output$tweets <- renderUI({
-    tagList(map(transpose(sorted_tweets()), embed_tweet), 
+  output$embedded_dataset_tweets <- renderUI({
+    tagList(map(transpose(sorted_dataset_tweets()), embed_tweet), 
             tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
   })
+  
+  user_tweets <- reactive({
+    tweets %>%
+      filter(screen_name == input$user_name) %>%
+      select(status_url, created_at, favorite_count, retweet_count)
+  })
+  
+  sorted_user_tweets <- reactive({
+    switch(input$sort_by,
+           "Most recent"   = user_tweets() %>% arrange(desc(created_at)),
+           "Most likes"    = user_tweets() %>% arrange(desc(favorite_count)),
+           "Most retweets" = user_tweets() %>% arrange(desc(retweet_count)))
+  })
+  
+  output$user_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
+ 
+  output$user_name <- renderText({input$user_name})
+  
+  output$user_links <- renderUI({
+    tagList(make_links(paste0("https://twitter.com/", input$user_name), "Twitter", "\U0001F4AC"))
+  })
+  
+  output$embedded_user_tweets <- renderUI({
+    tagList(map(transpose(sorted_user_tweets()), embed_tweet), 
+            tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
+  }) 
 }
 
 
