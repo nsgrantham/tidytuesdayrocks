@@ -46,16 +46,14 @@ ui <- fluidPage(
           tabPanel("Filter by Dataset", value = "dataset",
             br(),
             selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name), 
-                        selected = rev(datasets$dataset_name)[1])),
+                        selected = rev(datasets$dataset_name)[1]),
+            selectInput('dataset_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
+                        selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))),
           tabPanel("Filter by User", value = "user",
             br(),
-            #selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name), 
-            #            selected = rev(datasets$dataset_name)[1]))),
-            selectizeInput("user_name", "Choose a user", users, selected = sample(users, 1)))),
-            #selectInput('user_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-            #            selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))))
-        selectInput('sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-                    selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))
+            selectizeInput("user_name", "Choose a user", users, selected = sample(users, 1)),
+            selectInput('user_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
+                        selected = "Most recent")))
     ),
     column(6,
       conditionalPanel(
@@ -108,13 +106,13 @@ server <- function(input, output, session) {
   })
   
   sorted_dataset_tweets <- reactive({
-    switch(input$sort_by,
+    switch(input$dataset_sort_by,
            "Most recent"   = dataset_tweets() %>% arrange(desc(created_at)),
            "Most likes"    = dataset_tweets() %>% arrange(desc(favorite_count)),
            "Most retweets" = dataset_tweets() %>% arrange(desc(retweet_count)))
   })
   
-  output$dataset_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
+  output$dataset_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$dataset_sort_by))})
   
   output$dataset_name <- renderText({chosen_dataset()$dataset_name})
   
@@ -136,13 +134,13 @@ server <- function(input, output, session) {
   })
   
   sorted_user_tweets <- reactive({
-    switch(input$sort_by,
+    switch(input$user_sort_by,
            "Most recent"   = user_tweets() %>% arrange(desc(created_at)),
            "Most likes"    = user_tweets() %>% arrange(desc(favorite_count)),
            "Most retweets" = user_tweets() %>% arrange(desc(retweet_count)))
   })
   
-  output$user_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$sort_by))})
+  output$user_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$user_sort_by))})
  
   output$user_name <- renderText({input$user_name})
   
