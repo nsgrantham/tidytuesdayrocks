@@ -41,6 +41,7 @@ ui <- fluidPage(
                  "among 136 submissions. \U0001F57A</p>")),
       HTML("<p>I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
       p("Happy plotting!"),
+      HTML("<p>(P.S. you may need to disable the DuckDuckGo Privacy Essentials browser extension for this website because it appears to block the JavaScript that embeds the tweets. If anybody knows a fix to this, please <a href='https://github.com/nsgrantham/tidytuesdayrocks/issues'>open an issue</a>!)</p>"),
       br(),
       tabsetPanel(id = "selected_tab", type = "tabs", selected = "dataset",
           tabPanel("Filter by Dataset", value = "dataset",
