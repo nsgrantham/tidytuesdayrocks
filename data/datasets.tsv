@@ -76,6 +76,6 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 73	🤩 "The Simpsons" Guest Stars	https://en.wikipedia.org/wiki/List_of_The_Simpsons_guest_stars		https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-27
 74	💻 Moore's Law	https://ourworldindata.org/technological-progress	https://en.wikipedia.org/wiki/Transistor_count	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-03
 75	🎢 Amusement Park Injuries	https://saferparksdata.org/	https://data.world/amillerbernd/texas-amusement-park-accidents/workspace/file?filename=Amusement-Park-Injuries-xlsxCleaned.xls, https://saferparksdata.org	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-10
-
+76	🏞 US National Park Visits	https://fivethirtyeight.com/features/the-national-parks-have-never-been-more-popular/	https://data.world/inform8n/us-national-parks-visitation-1904-2016-with-boundaries	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-17
 
 
