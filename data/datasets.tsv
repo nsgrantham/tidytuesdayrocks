@@ -14,7 +14,7 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 13	🥃 Alcohol Consumption	https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/	https://github.com/rudeboybert/fivethirtyeight	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-06-26
 14	👵 Global Life Expectancy	https://ourworldindata.org/life-expectancy	https://ourworldindata.org	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-03
 15	🍺 US Craft Beer	https://www.thrillist.com/news/nation/most-craft-breweries-by-state-united-states	https://data.world/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-10
-16	🏋️‍♂️ US Exercise	https://www.cdc.gov/nchs/data/nhsr/nhsr112.pdf	https://www.cdc.gov/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-17
+16	🤸‍♀️ US Exercise	https://www.cdc.gov/nchs/data/nhsr/nhsr112.pdf	https://www.cdc.gov/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-17
 17	📉 p-hack-athon Collaboration	http://phackathon.netlify.com/	https://simplystatistics.org/	http://phackathon.netlify.com/#about
 18	🐈 Dallas Animal Shelter 2017	https://www.dallasopendata.com/stories/s/FY-2017-Dallas-Animal-Descriptive-Analysis/upeh-b6mt	https://www.dallasopendata.com/City-Services/FY-2017-Dallas-Animal-Shelter-Data/sjyj-ydcj	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-31
 19	🛫 Airline Safety	https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/	https://github.com/rudeboybert/fivethirtyeight	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-08-07
