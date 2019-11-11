@@ -14,7 +14,7 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 13	🥃 Alcohol Consumption	https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/	https://github.com/rudeboybert/fivethirtyeight	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-06-26
 14	👵 Global Life Expectancy	https://ourworldindata.org/life-expectancy	https://ourworldindata.org	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-03
 15	🍺 US Craft Beer	https://www.thrillist.com/news/nation/most-craft-breweries-by-state-united-states	https://data.world/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-10
-16	🏋️‍♂️ US Exercise	https://www.cdc.gov/nchs/data/nhsr/nhsr112.pdf	https://www.cdc.gov/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-17
+16	🤸‍♀️ US Exercise	https://www.cdc.gov/nchs/data/nhsr/nhsr112.pdf	https://www.cdc.gov/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-17
 17	📉 p-hack-athon Collaboration	http://phackathon.netlify.com/	https://simplystatistics.org/	http://phackathon.netlify.com/#about
 18	🐈 Dallas Animal Shelter 2017	https://www.dallasopendata.com/stories/s/FY-2017-Dallas-Animal-Descriptive-Analysis/upeh-b6mt	https://www.dallasopendata.com/City-Services/FY-2017-Dallas-Animal-Shelter-Data/sjyj-ydcj	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-07-31
 19	🛫 Airline Safety	https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/	https://github.com/rudeboybert/fivethirtyeight	https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-08-07
@@ -76,6 +76,11 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 73	🤩 "The Simpsons" Guest Stars	https://en.wikipedia.org/wiki/List_of_The_Simpsons_guest_stars		https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-27
 74	💻 Moore's Law	https://ourworldindata.org/technological-progress	https://en.wikipedia.org/wiki/Transistor_count	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-03
 75	🎢 Amusement Park Injuries	https://saferparksdata.org/	https://data.world/amillerbernd/texas-amusement-park-accidents/workspace/file?filename=Amusement-Park-Injuries-xlsxCleaned.xls, https://saferparksdata.org	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-10
-
-
+76	🏞 US National Park Visits	https://fivethirtyeight.com/features/the-national-parks-have-never-been-more-popular/	https://data.world/inform8n/us-national-parks-visitation-1904-2016-with-boundaries	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-17
+77	👩‍🏫 School Diversity	https://www.washingtonpost.com/graphics/2019/local/school-diversity-data/	https://nces.ed.gov/ccd/pubschuniv.asp	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-09-24
+78	🍕 All the Pizza	https://towardsdatascience.com/adventures-in-barstools-pizza-data-9b8ae6bb6cd1	https://twitter.com/jaredlander/status/1178122846419193858?s=20, https://github.com/tylerjrichards/Barstool_Pizza, https://www.kaggle.com/datafiniti/pizza-restaurants-and-the-pizza-they-sell	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-01
+79	🏋️‍♂️ Powerlifting	https://oziolor.wordpress.com/2018/05/19/part-i-getting-old-you-can-still-lift/	https://www.openpowerlifting.org/data	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-08
+80	🚗 Car Fuel Economy	https://thebioengineer.github.io/thebioengineer.github.io/2019/09/10/big-mtcars/	https://www.fueleconomy.gov/feg/download.shtml	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-15
+81	👻 Horror Movie Ratings	https://stephenfollows.com/what-the-data-says-about-producing-low-budget-horror-films/	https://www.kaggle.com/PromptCloudHQ/imdb-horror-movie-dataset	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-22
+82	🐿 NYC Squirrel Census	https://www.citylab.com/life/2019/06/squirrel-census-results-population-central-park-nyc/592162/	https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw	https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-29
 
