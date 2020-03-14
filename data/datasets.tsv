@@ -98,3 +98,8 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 95	🌳 San Francisco Trees	https://www.sfweekly.com/news/feature/trees-of-life/	https://data.sfgov.org/City-Infrastructure/Street-Tree-List/tkzw-k3nq	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-01-28
 96	🎟 NFL Attendance	https://www.casino.org/record-and-attendance/	https://www.pro-football-reference.com/years/2002/index.htm	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-04
 97	🏨 Hotel Bookings	https://tsibble.tidyverts.org/	https://www.sciencedirect.com/science/article/pii/S2352340918315191#bib5	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-11
+98	🍔 Food Carbon Footprint	https://r-tastic.co.uk/post/from-messy-to-tidy/	https://www.nu3.de/blogs/nutrition/food-carbon-footprint-index-2018	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-02-18
+99	💉 Measles Vaccination	https://www.wsj.com/graphics/school-measles-rate-map/	https://github.com/WSJ/measles-data	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-25
+100	🏒 NHL Goals	https://www.washingtonpost.com/graphics/2020/sports/capitals/ovechkin-700-goals/?utm_campaign=wp_graphics&utm_medium=social&utm_source=twitter	https://www.hockey-reference.com/leaders/goals_career.html	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-03
+101	🏫 College Tuition & Diversity	https://www.tuitiontracker.org/school.html?unitid=228778	https://www.tuitiontracker.org/	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-10
+
