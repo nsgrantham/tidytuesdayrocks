@@ -65,8 +65,12 @@ returned_tweets <- map_dfr(results, function(df) {
 # Combine returned_tweets with current_tweets, and update favorite_count and 
 # retweet_count for tweets in both current_tweets and returned_tweets
 
+current_tweets_not_in_returned_tweets <- current_tweets %>% 
+  filter(!(status_url %in% returned_tweets$status_url)) %>%
+  as_tibble()
+
 returned_tweets %>%
   left_join(select(current_tweets, status_url, dataset_id), by = "status_url") %>%
-  bind_rows(filter(current_tweets, !(status_url %in% returned_tweets$status_url))) %>%
+  bind_rows(current_tweets_not_in_returned_tweets) %>%
   write_tsv(file.path("data", "tweets.tsv"))
 

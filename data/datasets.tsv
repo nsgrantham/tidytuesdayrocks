@@ -102,4 +102,10 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 99	💉 Measles Vaccination	https://www.wsj.com/graphics/school-measles-rate-map/	https://github.com/WSJ/measles-data	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-02-25
 100	🏒 NHL Goals	https://www.washingtonpost.com/graphics/2020/sports/capitals/ovechkin-700-goals/?utm_campaign=wp_graphics&utm_medium=social&utm_source=twitter	https://www.hockey-reference.com/leaders/goals_career.html	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-03
 101	🏫 College Tuition & Diversity	https://www.tuitiontracker.org/school.html?unitid=228778	https://www.tuitiontracker.org/	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-10
-
+102	👨‍💼 The Office	https://pudding.cool/2017/08/the-office/	https://bradlindblad.github.io/schrute/index.html	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-03-17
+103	🧠 Traumatic Brain Injury	https://www.cdc.gov/mmwr/volumes/68/wr/mm6810a1.htm	https://www.cdc.gov/mmwr/volumes/68/wr/mm6810a1.htm	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-03-24
+104	🍻 Beer Production	https://www.brewersassociation.org/insights/cans-bottles-craft-beer-packaging-trends/	https://www.ttb.gov/beer/statistics	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-03-31
+105	🚴‍♂️ Tour de France	https://alastairrushworth.github.io/Visualising-Tour-de-France-data-in-R/	https://github.com/alastairrushworth/tdf	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-04-07
+106	🎤 Best Rap Artists	https://blog.datawrapper.de/best-hip-hop-songs-of-all-time-visualized/	http://www.bbc.com/culture/story/20191007-the-greatest-hip-hop-songs-of-all-time-who-voted	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-04-14
+107	🚫 GDPR Violations	https://blog.rmhogervorst.nl/blog/2020/04/08/scraping-gdpr-fines/	https://www.privacyaffairs.com/gdpr-fines/	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-04-21
+108	🎭 Broadway Musicals	https://www.alexcookson.com/post/most-successful-broadway-show-of-all-time/	https://www.playbill.com/grosses	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-04-28
