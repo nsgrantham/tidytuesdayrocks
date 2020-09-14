@@ -48,7 +48,8 @@ while (more_pages) {
 
 # Tidy up the tweets
 
-returned_tweets <- map_dfr(results, function(df) {
+returned_tweets <- map_dfr(results,
+  function(df) {
     df %>%
       select(created_at, status_id = id_str, favorite_count, retweet_count) %>%
       bind_cols(select(df$user, screen_name)) %>%
