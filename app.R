@@ -46,10 +46,10 @@ ui <- fluidPage(
       id = "sidebar",
       tags$h1("tidytuesday.rocks"),
       tags$br(),
-      HTML(paste(
+      HTML(paste0(
         "<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly data visualization challenge for R users hosted on Twitter with #TidyTuesday.</p>",
-        "<p>Since April 2nd, 2018, there are now</p>",
-        "<ul><li>4,613 tweets from</li><li>1,027 users across</li><li>111 datasets!</li></ul>",
+        "<p>As of July 14th, 2020, there are</p>",
+        "<ul><li> 5,201 tweets from</li><li>1,141 users across</li><li>121 datasets!</li></ul>",
         "<p>Use the options below to filter the tweets by dataset or user and sort them by likes, retweets, and when they were posted. Happy plotting! \U0001F57A</p>",
         "<p>(Made by <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>. Source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>.)</p>"
       )),
