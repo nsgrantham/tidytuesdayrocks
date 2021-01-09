@@ -129,3 +129,7 @@ dataset_id	dataset_name	dataset_articles	dataset_sources	dataset_files
 126	🌾 Global Crop Yields	https://ourworldindata.org/crop-yields	https://ourworldindata.org/crop-yields	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01
 127	👫 Friends	https://www.ceros.com/originals/friends-scripts-25th-anniversary-catchphrase-scenes-quotes/	https://github.com/EmilHvitfeldt/friends	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-08
 128	🧒 US Spending on Kids	https://jrosen48.github.io/tidykids/index.html	https://datacatalog.urban.org/dataset/state-state-spending-kids-dataset	https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-15
+129	🗻 Himalayan Climbers	https://www.alexcookson.com/post/analyzing-himalayan-peaks-first-ascents/	https://www.himalayandatabase.com/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-09-22
+130	🎤 Beyoncé & Taylor Swift Lyrics	https://rpubs.com/RosieB/taylorswiftlyricanalysis	https://twitter.com/Rosie_Baillie_,https://twitter.com/sastoudt	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-09-29
+131	⛹️‍♀️ NCAA Women's Basketball	https://fivethirtyeight.com/features/louisiana-tech-was-the-uconn-of-the-80s/	https://fivethirtyeight.com/features/louisiana-tech-was-the-uconn-of-the-80s/	https://github.com/rfordatascience/tidytuesday/tree/master/data/2020/2020-10-06
+
