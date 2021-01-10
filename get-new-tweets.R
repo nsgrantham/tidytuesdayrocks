@@ -14,7 +14,7 @@ latest_datetime <- current_tweets %>%
 from_date <- (latest_datetime - days(1)) %>%
   format(format = "%Y%m%d%H%M")
 
-to_date <- min(latest_datetime + weeks(3), with_tz(now(), tzone = "UTC")) %>%
+to_date <- min(latest_datetime + weeks(4), with_tz(now(), tzone = "UTC")) %>%
   format(format = "%Y%m%d%H%M")
 
 # Query Twitter API and collect tweets
@@ -58,9 +58,11 @@ returned_tweets <- map_dfr(results,
   mutate(is_retweet = !is.na(id)) %>%
   select(-id) %>%
   filter(!is_retweet) %>%
-  mutate(status_url = paste0("https://twitter.com/", screen_name, "/status/", status_id),
-         created_at = parse_date_time(str_replace(created_at, "\\+0000", ""), "abdHMSY"),
-         created_at = force_tz(created_at, tzone = "UTC")) %>%
+  mutate(
+    status_url = paste0("https://twitter.com/", screen_name, "/status/", status_id),
+    created_at = parse_date_time(str_replace(created_at, "\\+0000", ""), "abdHMSY"),
+    created_at = force_tz(created_at, tzone = "UTC")
+  ) %>%
   select(status_url, screen_name, created_at, favorite_count, retweet_count)
 
 # Combine returned_tweets with current_tweets, and update favorite_count and 
