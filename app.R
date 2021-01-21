@@ -48,8 +48,8 @@ ui <- fluidPage(
       tags$br(),
       HTML(paste0(
         "<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly data visualization challenge for R users hosted on Twitter with #TidyTuesday.</p>",
-        "<p>As of September 15th, 2020, there are</p>",
-        "<ul><li> 6,002 tweets from</li><li>1,312 users across</li><li>130 datasets!</li></ul>",
+        "<p>As of January 21, 2021, there are</p>",
+        "<ul><li> 7,117 tweets from</li><li>1,508 users across</li><li>147 datasets!</li></ul>",
         "<p>Use the options below to filter the tweets by dataset or user and sort them by likes, retweets, and when they were posted. Happy plotting! \U0001F57A</p>",
         "<p>(Made by <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>. Source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>.)</p>"
       )),

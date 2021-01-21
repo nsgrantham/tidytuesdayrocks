@@ -11,10 +11,10 @@ latest_datetime <- current_tweets %>%
   first() %>%
   force_tz(tzone = "UTC")
 
-from_date <- (latest_datetime - days(1)) %>%
+from_date <- (latest_datetime - weeks(1)) %>%
   format(format = "%Y%m%d%H%M")
 
-to_date <- min(latest_datetime + weeks(4), with_tz(now(), tzone = "UTC")) %>%
+to_date <- min(latest_datetime + weeks(3), with_tz(now(), tzone = "UTC")) %>%
   format(format = "%Y%m%d%H%M")
 
 # Query Twitter API and collect tweets
