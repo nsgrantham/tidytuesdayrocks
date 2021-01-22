@@ -4,6 +4,7 @@ library(purrr)
 library(readr)
 library(stringr)
 library(magrittr)
+library(reactable)
 
 datasets <- read_tsv(file.path("data", "datasets.tsv"))
 
@@ -16,69 +17,76 @@ users <- tweets %>%
   sort()
 
 ui <- fluidPage(
-  tags$head(HTML('<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">')),
-  tags$head(HTML('<style>* {font-size: 100%; font-family: Roboto Mono;}</style>')),
-  tags$head(HTML('<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>')),
-  fluidRow(
-    column(1),
-    column(4,
-      h2("tidytuesday.rocks"),
-      HTML(paste("<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a>",
-                 "is a weekly social data project in <a href='https://www.r-project.org/'>R</a>.",
-                 "Every week <a href='https://twitter.com/thomas_mock'>@thomas_mock</a> and",
-                 "<a href='https://twitter.com/R4DSCommunity'>@R4DSCommunity</a> post a new dataset",
-                 "and ask R users to explore it and share their findings on Twitter with",
-                 "<a href='https://twitter.com/search?src=typd&q=%23tidytuesday'>#TidyTuesday</a>.</p>")),
-      HTML(paste("<p>Since the first dataset was posted on April 2nd, 2018, there are now",
-                 "84 datasets and 3,069 #TidyTuesday tweets from 700 users! Use the options",
-                 "below to filter the tweets by dataset or Twitter user and sort them by date, likes, and retweets.</p>")),
-      HTML(paste("<p>tidytuesday.rocks is about 150 lines of R code and relies on your #TidyTuesday",
-                 "tweets, which I scrape and manually label every few weeks. ",
-                 "It is built with <a href='https://shiny.rstudio.com/'>Shiny</a> and <a href='https://rtweet.info/'>rtweet</a>",
-                 "and its source code is <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>.</p>")),
-      HTML(paste("<p>The response to tidytuesday.rocks has been amazing! It was even awarded ", 
-                 "<a href='https://blog.rstudio.com/2019/04/05/first-shiny-contest-winners/'>a runner up spot in the 1st Shiny Contest</a>",
-                 "among 136 submissions. \U0001F57A</p>")),
-      HTML("<p>I'd love to hear your feedback, say hi <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>.</p>"),
-      p("Happy plotting!"),
-      HTML("<p>(P.S. you may need to disable the DuckDuckGo Privacy Essentials browser extension for this website because it appears to block the JavaScript that embeds the tweets. If anybody knows a fix to this, please <a href='https://github.com/nsgrantham/tidytuesdayrocks/issues'>open an issue</a>!)</p>"),
-      br(),
-      tabsetPanel(id = "selected_tab", type = "tabs", selected = "dataset",
-          tabPanel("Filter by Dataset", value = "dataset",
-            br(),
-            selectInput('dataset_name', 'Choose a dataset', rev(datasets$dataset_name), 
-                        selected = rev(datasets$dataset_name)[1]),
-            selectInput('dataset_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-                        selected = base::sample(c("Most recent", "Most likes", "Most retweets"), 1))),
-          tabPanel("Filter by User", value = "user",
-            br(),
-            selectizeInput("user_name", "Choose a user", users, selected = sample(users, 1)),
-            selectInput('user_sort_by', 'Sort tweets', c("Most recent", "Most likes", "Most retweets"), 
-                        selected = "Most recent")))
+  tags$head(
+    tags$script(src = "https://platform.twitter.com/widgets.js", charset = "utf-8"),
+    tags$link(href = "https://fonts.googleapis.com/css?family=Roboto+Mono", rel = "stylesheet"),
+    tags$style(HTML('
+      * {
+        font-family: Roboto Mono;
+        font-size: 100%;
+      }
+      #sidebar {
+         background-color: #fff;
+         border: 0px;
+      }
+      .rt-th {
+        display: none;
+      }
+      .rt-noData {
+        display: none;
+      }
+      .rt-pagination-nav {
+        float: left;
+        width: 100%;
+      }
+    '))
+  ),
+  
+  sidebarLayout(
+    sidebarPanel(
+      id = "sidebar",
+      tags$h1("tidytuesday.rocks"),
+      tags$br(),
+      HTML(paste0(
+        "<p><a href='https://github.com/rfordatascience/tidytuesday'>Tidy Tuesday</a> is a weekly data visualization challenge for R users hosted on Twitter with #TidyTuesday.</p>",
+        "<p>As of January 21, 2021, there are</p>",
+        "<ul><li> 7,117 tweets from</li><li>1,508 users across</li><li>147 datasets!</li></ul>",
+        "<p>Use the options below to filter the tweets by dataset or user and sort them by likes, retweets, and when they were posted. Happy plotting! \U0001F57A</p>",
+        "<p>(Made by <a href='https://twitter.com/nsgrantham'>@nsgrantham</a>. Source code <a href='https://github.com/nsgrantham/tidytuesdayrocks'>on GitHub</a>.)</p>"
+      )),
+      tags$br(),
+      tabsetPanel(
+        id = "selected_tab",
+        type = "tabs",
+        selected = "dataset",
+        tabPanel("Dataset tweets", value = "dataset",
+          tags$br(),
+          selectInput("dataset_name", NULL, rev(datasets$dataset_name), selected = rev(datasets$dataset_name)[1]),
+          selectInput("dataset_sort_by", NULL, c("Sorted by most likes", "Sorted by most retweets", "Sorted by most recent"), selected = "Sorted by most likes"),
+          uiOutput("dataset_links")
+        ),
+        tabPanel("User tweets", value = "user",
+          tags$br(),
+          selectizeInput("user_name", NULL, users, selected = sample(users, 1)),
+          selectInput("user_sort_by", NULL, c("Sorted by most likes", "Sorted by most retweets", "Sorted by most recent"), selected = "Sorted by most likes"),
+          uiOutput("user_links")
+        )
+      ),
+      width = 5
     ),
-    column(6,
+    mainPanel(
       conditionalPanel(
         condition = "input.selected_tab == 'dataset'",
-        h2(textOutput('dataset_name')),
-        p(uiOutput('dataset_links')), 
-        h3(textOutput('dataset_tweets_sorted_by')),
-        uiOutput('embedded_dataset_tweets')
+        reactableOutput("embedded_dataset_tweets_table", width = "600px")
       ),
       conditionalPanel(
         condition = "input.selected_tab == 'user'",
-        h2(textOutput('user_name')),
-        p(uiOutput('user_links')), 
-        h3(textOutput('user_tweets_sorted_by')),
-        uiOutput('embedded_user_tweets')
-      )
-    ),
-    column(1)
+        reactableOutput("embedded_user_tweets_table", width = "600px")
+      ),
+      width = 7
+    )
   )
 )
-
-embed_tweet <- function(tweet) {
-  tags$blockquote(class = "twitter-tweet", tags$a(href = tweet$status_url))
-}
 
 make_links <- function(urls, text, icon = NULL) {
   if (is.na(urls)) return("")
@@ -87,8 +95,32 @@ make_links <- function(urls, text, icon = NULL) {
     text <- paste(text, 1:length(split_urls))
   }
   names(split_urls) <- text 
-  links <- imap(split_urls, ~ shiny::a(.y, href = .x))
+  links <- imap(split_urls, ~ tags$a(.y, href = .x, target = "_blank"))
   c(icon, links)
+}
+
+embed_tweet <- function(tweet_url) {
+  paste0(
+    "<blockquote class='twitter-tweet'>",
+    "<p lang='en' dir='ltr'>",
+    "Loading...",
+    "<a href='", tweet_url, "'></a>",
+    "</p>",
+    "</blockquote>"
+  )
+}
+
+make_embedded_tweets_table <- function(tweets) {
+  reactable(
+    tweets,
+    showPageInfo = FALSE,
+    defaultPageSize = 1,
+    sortable = FALSE,
+    width = 600,
+    height = 700,
+    columns = list(status_url = colDef(cell = embed_tweet, html = TRUE)),
+    rowClass = JS("function() {twttr.widgets.load()}")
+  )
 }
 
 server <- function(input, output, session) {
@@ -103,57 +135,66 @@ server <- function(input, output, session) {
   dataset_tweets <- reactive({
     tweets %>%
       filter(dataset_id == chosen_dataset()$dataset_id) %>%
-      select(status_url, created_at, favorite_count, retweet_count)
+      select(screen_name, status_url, created_at, favorite_count, retweet_count)
   })
   
   sorted_dataset_tweets <- reactive({
-    switch(input$dataset_sort_by,
-           "Most recent"   = dataset_tweets() %>% arrange(desc(created_at)),
-           "Most likes"    = dataset_tweets() %>% arrange(desc(favorite_count)),
-           "Most retweets" = dataset_tweets() %>% arrange(desc(retweet_count)))
+    switch(
+      input$dataset_sort_by,
+      "Sorted by most recent" = arrange(dataset_tweets(), desc(created_at)),
+      "Sorted by most likes" = arrange(dataset_tweets(), desc(favorite_count)),
+      "Sorted by most retweets" = arrange(dataset_tweets(), desc(retweet_count))
+    )
   })
-  
-  output$dataset_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$dataset_sort_by))})
-  
-  output$dataset_name <- renderText({chosen_dataset()$dataset_name})
   
   output$dataset_links <- renderUI({
-    tagList(make_links(chosen_dataset()$dataset_files, "Data", "\U0001F4BE"),        # floppy disk
-            make_links(chosen_dataset()$dataset_articles, "Article", "\U0001F5DE"),  # rolled up newspaper
-            make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD"))    # red pin
+    tagList(
+      make_links(chosen_dataset()$dataset_files, "Data Download", "\U0001F4BE"), # floppy disk
+      make_links(chosen_dataset()$dataset_articles, "Article", "\U0001F5DE"),    # rolled up newspaper
+      make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD")       # red pin
+    )    
   })
   
-  output$embedded_dataset_tweets <- renderUI({
-    tagList(map(transpose(sorted_dataset_tweets()), embed_tweet), 
-            tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
-  })
+  output$embedded_dataset_tweets_table <- renderReactable(
+    sorted_dataset_tweets() %>%
+      select(status_url) %>%
+      make_embedded_tweets_table()
+  )
   
-  user_tweets <- reactive({
+  observeEvent(
+    sorted_dataset_tweets(),
+    updateReactable("embedded_dataset_tweets_table", page = 1)
+  )
+  
+  user_tweets <- reactive(
     tweets %>%
       filter(screen_name == input$user_name) %>%
       select(status_url, created_at, favorite_count, retweet_count)
-  })
+  )
   
-  sorted_user_tweets <- reactive({
-    switch(input$user_sort_by,
-           "Most recent"   = user_tweets() %>% arrange(desc(created_at)),
-           "Most likes"    = user_tweets() %>% arrange(desc(favorite_count)),
-           "Most retweets" = user_tweets() %>% arrange(desc(retweet_count)))
-  })
+  sorted_user_tweets <- reactive(
+    switch(
+      input$user_sort_by,
+      "Sorted by most recent" = arrange(user_tweets(), desc(created_at)),
+      "Sorted by most likes" = arrange(user_tweets(), desc(favorite_count)),
+      "Sorted by most retweets" = arrange(user_tweets(), desc(retweet_count))
+    )
+  )
   
-  output$user_tweets_sorted_by <- reactive({paste("Tweets sorted by", tolower(input$user_sort_by))})
- 
-  output$user_name <- renderText({input$user_name})
-  
-  output$user_links <- renderUI({
+  output$user_links <- renderUI(
     tagList(make_links(paste0("https://twitter.com/", input$user_name), "Twitter", "\U0001F4AC"))  # speech bubble
-  })
+  )
   
-  output$embedded_user_tweets <- renderUI({
-    tagList(map(transpose(sorted_user_tweets()), embed_tweet), 
-            tags$script('twttr.widgets.load(document.getElementById("tweets"));'))
-  }) 
+  output$embedded_user_tweets_table <- renderReactable(
+    sorted_user_tweets() %>%
+      select(status_url) %>%
+      make_embedded_tweets_table()
+  )
+  
+  observeEvent(
+    sorted_user_tweets(), 
+    updateReactable("embedded_user_tweets_table", page = 1)
+  )
 }
-
 
 shinyApp(ui, server)
