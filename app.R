@@ -18,6 +18,7 @@ users <- tweets %>%
 
 ui <- fluidPage(
   tags$head(
+    tags$script(src = "https://platform.twitter.com/widgets.js", charset = "utf-8"),
     tags$link(href = "https://fonts.googleapis.com/css?family=Roboto+Mono", rel = "stylesheet"),
     tags$style(HTML('
       * {
@@ -94,8 +95,32 @@ make_links <- function(urls, text, icon = NULL) {
     text <- paste(text, 1:length(split_urls))
   }
   names(split_urls) <- text 
-  links <- imap(split_urls, ~ shiny::a(.y, href = .x))
+  links <- imap(split_urls, ~ tags$a(.y, href = .x, target = "_blank"))
   c(icon, links)
+}
+
+embed_tweet <- function(tweet_url) {
+  paste0(
+    "<blockquote class='twitter-tweet'>",
+    "<p lang='en' dir='ltr'>",
+    "Loading...",
+    "<a href='", tweet_url, "'></a>",
+    "</p>",
+    "</blockquote>"
+  )
+}
+
+make_embedded_tweets_table <- function(tweets) {
+  reactable(
+    tweets,
+    showPageInfo = FALSE,
+    defaultPageSize = 1,
+    sortable = FALSE,
+    width = 600,
+    height = 700,
+    columns = list(status_url = colDef(cell = embed_tweet, html = TRUE)),
+    rowClass = JS("function() {twttr.widgets.load()}")
+  )
 }
 
 server <- function(input, output, session) {
@@ -124,88 +149,52 @@ server <- function(input, output, session) {
   
   output$dataset_links <- renderUI({
     tagList(
-      make_links(chosen_dataset()$dataset_files, "Data Download", "\U0001F4BE"),        # floppy disk
-      make_links(chosen_dataset()$dataset_articles, "Article", "\U0001F5DE"),  # rolled up newspaper
-      make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD")     # red pin
+      make_links(chosen_dataset()$dataset_files, "Data Download", "\U0001F4BE"), # floppy disk
+      make_links(chosen_dataset()$dataset_articles, "Article", "\U0001F5DE"),    # rolled up newspaper
+      make_links(chosen_dataset()$dataset_sources, "Source", "\U0001F4CD")       # red pin
     )    
   })
   
-  output$embedded_dataset_tweets_table <- renderReactable({
-    reactable(
-      transmute(sorted_dataset_tweets(), url_datetime = paste(status_url, created_at, sep = "|")),
-      showPageInfo = FALSE,
-      defaultPageSize = 1,
-      sortable = FALSE,
-      columns = list(
-        url_datetime = colDef(
-          cell = function(url_datetime) {
-            split_url_datetime <- unlist(str_split(url_datetime, "\\|"))
-            url <- URLencode(split_url_datetime[1], reserved = TRUE)
-            datetime <- as.numeric(as.POSIXct(split_url_datetime[2]))
-            tags$iframe(
-              src = paste0("https://twitframe.com/show?url=", url, "&datetime=", datetime),
-              border = 0,
-              frameborder = 0,
-              height = 625,
-              width = 600
-            )
-          }
-        )
-      )
-    )
-  })
+  output$embedded_dataset_tweets_table <- renderReactable(
+    sorted_dataset_tweets() %>%
+      select(status_url) %>%
+      make_embedded_tweets_table()
+  )
   
-  observeEvent(sorted_dataset_tweets(), {
+  observeEvent(
+    sorted_dataset_tweets(),
     updateReactable("embedded_dataset_tweets_table", page = 1)
-  })
+  )
   
-  user_tweets <- reactive({
+  user_tweets <- reactive(
     tweets %>%
       filter(screen_name == input$user_name) %>%
       select(status_url, created_at, favorite_count, retweet_count)
-  })
+  )
   
-  sorted_user_tweets <- reactive({
+  sorted_user_tweets <- reactive(
     switch(
       input$user_sort_by,
       "Sorted by most recent" = arrange(user_tweets(), desc(created_at)),
       "Sorted by most likes" = arrange(user_tweets(), desc(favorite_count)),
       "Sorted by most retweets" = arrange(user_tweets(), desc(retweet_count))
     )
-  })
+  )
   
-  output$user_links <- renderUI({
+  output$user_links <- renderUI(
     tagList(make_links(paste0("https://twitter.com/", input$user_name), "Twitter", "\U0001F4AC"))  # speech bubble
-  })
+  )
   
-  output$embedded_user_tweets_table <- renderReactable({
-    reactable(
-      transmute(sorted_user_tweets(), url_datetime = paste(status_url, created_at, sep = "|")),
-      showPageInfo = FALSE,
-      defaultPageSize = 1,
-      sortable = FALSE,
-      columns = list(
-        url_datetime = colDef(
-          cell = function(url_datetime) {
-            split_url_datetime <- unlist(str_split(url_datetime, "\\|"))
-            url <- URLencode(split_url_datetime[1], reserved = TRUE)
-            datetime <- as.numeric(as.POSIXct(split_url_datetime[2]))
-            tags$iframe(
-              src = paste0("https://twitframe.com/show?url=", url, "&datetime=", datetime),
-              border = 0,
-              frameborder = 0,
-              height = 650,
-              width = 600
-            )
-          }
-        )
-      )
-    )
-  })
+  output$embedded_user_tweets_table <- renderReactable(
+    sorted_user_tweets() %>%
+      select(status_url) %>%
+      make_embedded_tweets_table()
+  )
   
-  observeEvent(sorted_user_tweets(), {
+  observeEvent(
+    sorted_user_tweets(), 
     updateReactable("embedded_user_tweets_table", page = 1)
-  })
+  )
 }
 
 shinyApp(ui, server)
